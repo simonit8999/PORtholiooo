@@ -5,457 +5,221 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Премиум портфолио · Telegram Apps</title>
   
-  <!-- Подключаем Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 
   <style>
     /* ===== RESET & BASE ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html {
-      height: 100%;
-      overflow: hidden;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { height: 100%; overflow: hidden; }
     body {
-      height: 100%;
-      background: #0b0d12;
-      font-family: 'Inter', sans-serif;
-      color: #f0f2f5;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-      position: relative;
+      height: 100%; background: #0b0d12; font-family: 'Inter', sans-serif;
+      color: #f0f2f5; line-height: 1.6; -webkit-font-smoothing: antialiased;
+      overflow: hidden; position: relative;
     }
 
     /* Параллакс-фон */
     #parallax-bg {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: radial-gradient(circle at 10% 20%, #1c212c 0%, #0b0d12 80%);
-      z-index: -1;
-      will-change: transform;
-      transition: transform 0.1s linear;
+      z-index: -1; will-change: transform;
     }
 
     /* ===== ТИПОГРАФИКА ===== */
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 500; letter-spacing: -0.01em; line-height: 1.2; }
+    h1 { font-size: 2.4rem; background: linear-gradient(135deg, #ffffff 0%, #a0aab8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 1rem; }
+    h2 { font-size: 1.8rem; color: #e0e5eb; margin-bottom: 1rem; }
+    h3 { font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; }
+    p { color: #b8c2d0; font-weight: 300; font-size: 1rem; }
 
-    h1 {
-      font-size: 2.4rem;
-      background: linear-gradient(135deg, #ffffff 0%, #a0aab8 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 1rem;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      color: #e0e5eb;
-      margin-bottom: 1rem;
-    }
-
-    h3 {
-      font-size: 1.4rem;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      color: #b8c2d0;
-      font-weight: 300;
-      font-size: 1rem;
-    }
-
-    /* ===== ЭФФЕКТ "МАСКИ" ДЛЯ ТЕКСТА (TEXT REVEAL) ===== */
-    .reveal-mask {
-      overflow: hidden;
-      display: block;
-      padding-bottom: 0.1em; /* Для букв с хвостиками (у, р, д) */
-      margin-bottom: -0.1em;
-    }
-
+    /* ===== TEXT REVEAL (МАСКА) ===== */
+    .reveal-mask { overflow: hidden; display: block; padding-bottom: 0.1em; margin-bottom: -0.1em; }
     .reveal-text {
-      display: block;
-      transform: translateY(110%);
-      opacity: 0;
+      display: block; transform: translateY(110%); opacity: 0;
       transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
     }
+    .reveal-text.visible { transform: translateY(0); opacity: 1; }
 
-    .reveal-text.visible {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    /* ===== СТРУКТУРА ПРИЛОЖЕНИЯ ===== */
-    #app {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      height: 100dvh;
-      width: 100vw;
-      overflow: hidden;
-    }
-
+    /* ===== СТРУКТУРА ===== */
+    #app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100vw; overflow: hidden; }
     .app-content {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 2rem 1.2rem 100px 1.2rem;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
+      flex: 1; overflow-y: auto; overflow-x: hidden; padding: 2rem 1.2rem 100px 1.2rem;
+      scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
     }
-
     .app-content::-webkit-scrollbar { display: none; }
     .app-content { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* ===== НИЖНЯЯ НАВИГАЦИЯ ===== */
+    /* ===== НАВИГАЦИЯ ===== */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 80px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: rgba(20, 25, 35, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 28px 28px 0 0;
-      padding-bottom: env(safe-area-inset-bottom);
-      z-index: 1000;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 80px;
+      display: flex; justify-content: space-around; align-items: center;
+      background: rgba(20, 25, 35, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px 28px 0 0;
+      padding-bottom: env(safe-area-inset-bottom); z-index: 1000;
     }
-
     .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      color: #8a94a6;
-      font-size: 0.7rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 60px;
-      height: 60px;
-      border-radius: 16px;
-      background: transparent;
-      border: none;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      color: #8a94a6; font-size: 0.7rem; font-weight: 500; cursor: pointer;
+      transition: all 0.3s ease; width: 60px; height: 60px; border-radius: 16px;
+      background: transparent; border: none;
     }
+    .nav-item.active { color: #fff; background: rgba(255, 255, 255, 0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .nav-item svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
-    .nav-item.active {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .nav-item svg {
-      width: 24px;
-      height: 24px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: transform 0.3s ease;
-    }
-
-    /* ===== ЭКРАНЫ (SPA) ===== */
-    .screen {
-      display: none;
-      animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .screen.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    /* ===== ЭКРАНЫ ===== */
+    .screen { display: none; animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     /* ===== КНОПКИ ===== */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #fff;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-      text-align: center;
-      width: 100%;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      will-change: transform;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 14px; padding: 1rem 2rem;
+      font-size: 1rem; font-weight: 500; color: #fff; text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1); cursor: pointer;
+      font-family: 'Inter', sans-serif; text-align: center; width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); will-change: transform;
     }
-
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      transform: scale(1.02);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-    }
+    .btn:hover { background: rgba(255, 255, 255, 0.12); transform: scale(1.02); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%); border: 1px solid rgba(255,255,255,0.25); }
 
     .btn-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      border: none;
-      color: #a0aab8;
-      font-size: 1rem;
-      font-weight: 400;
-      padding: 0.5rem 0;
-      margin-bottom: 1.5rem;
-      cursor: pointer;
-      width: auto;
-      box-shadow: none;
-      transition: color 0.2s;
+      display: inline-flex; align-items: center; gap: 8px; background: transparent; border: none;
+      color: #a0aab8; font-size: 1rem; font-weight: 400; padding: 0.5rem 0; margin-bottom: 1.5rem;
+      cursor: pointer; width: auto; box-shadow: none; transition: color 0.2s;
     }
-    .btn-back:hover {
-      color: #fff;
-      transform: none;
-      box-shadow: none;
-      background: transparent;
-    }
+    .btn-back:hover { color: #fff; transform: none; box-shadow: none; background: transparent; }
     .btn-back svg { width: 20px; height: 20px; }
 
+    /* ===== ГЛАВНАЯ СТРАНИЦА (ИСТОРИЯ) ===== */
+    .feature-grid {
+      display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; margin-bottom: 1rem;
+    }
+    .feature-card {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: rgba(30, 35, 48, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 1.25rem;
+      transition: transform 0.3s ease, border-color 0.3s;
+    }
+    .feature-icon {
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center;
+    }
+    .feature-icon svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .feature-content h4 { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; color: #fff; margin-bottom: 0.2rem; }
+    .feature-content p { font-size: 0.9rem; color: #a0aab8; line-height: 1.4; }
+
     /* ===== КАРТОЧКИ ПРОЕКТОВ ===== */
-    .project-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-
+    .project-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
     .project-card {
-      display: flex;
-      flex-direction: column;
-      background: rgba(30, 35, 48, 0.4);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
-      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-      will-change: transform;
+      display: flex; flex-direction: column; background: rgba(30, 35, 48, 0.4);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; overflow: hidden;
+      cursor: pointer; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); will-change: transform;
     }
+    .project-card:hover { transform: translateY(-4px) scale(1.01); border-color: rgba(255, 255, 255, 0.2); }
+    .project-card-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .project-card-content { padding: 1.5rem; }
 
-    .project-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .project-card-img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .project-card-content {
-      padding: 1.5rem;
-    }
-
-    /* ===== ДЕТАЛЬНЫЙ ЭКРАН ПРОЕКТА ===== */
-    .detail-header {
-      margin-bottom: 2rem;
-    }
-
-    .detail-header p {
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    /* Скролл-сторителлинг галереи */
-    .gallery {
-      display: flex;
-      flex-direction: column;
-      gap: 4rem; /* Большой отступ, чтобы картинки шли друг за другом */
-      margin-bottom: 3rem;
-      padding: 2rem 0;
-    }
-
-    .gallery-item {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      /* Начальное состояние для анимации */
-      opacity: 0;
-      transform: translateY(60px) scale(0.95);
+    /* ===== ДЕТАЛЬНЫЙ ЭКРАН (СКРОЛЛ-СТОРИТЕЛЛИНГ) ===== */
+    .detail-header { margin-bottom: 2rem; }
+    .detail-header p { font-size: 1.1rem; margin-bottom: 1.5rem; }
+    
+    .gallery { display: flex; flex-direction: column; gap: 4rem; margin-bottom: 3rem; padding: 2rem 0; }
+    
+    .story-block {
+      display: flex; flex-direction: column; gap: 0.8rem;
+      opacity: 0; transform: translateY(40px) scale(0.98);
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
-
-    .gallery-item.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+    .story-block.visible { opacity: 1; transform: translateY(0) scale(1); }
+    
+    .story-block img {
+      width: 100%; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7); object-fit: cover;
+      aspect-ratio: 9 / 16; background: rgba(255,255,255,0.02);
+    }
+    
+    /* Журнальный стиль подписей */
+    .story-title {
+      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600;
+      color: #fff; margin-top: 0.5rem; letter-spacing: -0.01em;
+    }
+    .story-desc {
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #a0aab8;
+      line-height: 1.5; font-weight: 300;
     }
 
-    .gallery-item img {
-      width: 100%;
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
-      object-fit: cover;
-      aspect-ratio: 9 / 16;
-      background: rgba(255,255,255,0.02);
-    }
-
-    .gallery-caption {
-      font-size: 0.95rem;
-      color: #a0aab8;
-      text-align: center;
-      font-style: italic;
-      padding: 0 1rem;
-    }
-
-    /* Блок "Боли" */
+    /* ===== БОЛИ ===== */
     .pain-points {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 20px;
-      padding: 1.5rem;
-      margin-top: 1.5rem;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px; padding: 1.5rem; margin-top: 1rem;
     }
-
-    .pain-points h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: #fff;
-    }
-
-    .pain-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .pain-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 0.95rem;
-      color: #c0c8d4;
-    }
-
+    .pain-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
+    .pain-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; color: #c0c8d4; }
     .pain-icon {
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.7rem;
+      flex-shrink: 0; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 0.7rem;
     }
 
-    /* ===== УСЛУГИ ===== */
-    .services-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
+    /* ===== УСЛУГИ (АККОРДЕОН) ===== */
+    .services-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+    
+    .accordion-item {
+      background: rgba(30, 35, 48, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden;
+      transition: border-color 0.3s;
     }
-
-    .service-card {
-      background: rgba(30, 35, 48, 0.4);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 1.5rem;
-      transition: transform 0.3s ease, border-color 0.3s;
+    .accordion-item.open { border-color: rgba(255, 255, 255, 0.2); }
+    
+    .accordion-header {
+      padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer; user-select: none; transition: background 0.3s;
     }
-
-    .service-card:active {
-      transform: scale(0.98);
+    .accordion-header:active { background: rgba(255, 255, 255, 0.05); }
+    .accordion-title h3 { font-size: 1.2rem; margin-bottom: 0.2rem; }
+    .accordion-title .price { font-size: 1rem; color: #8a94a6; font-weight: 500; }
+    
+    .accordion-icon {
+      width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: #8a94a6;
     }
+    .accordion-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .accordion-item.open .accordion-icon { transform: rotate(180deg); color: #fff; }
 
-    .service-price {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #fff;
-      margin: 0.2rem 0 0.8rem 0;
+    .accordion-content {
+      height: 0; overflow: hidden;
+      transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: height;
     }
-
-    .service-desc {
-      font-size: 0.95rem;
-      color: #b0bccc;
+    .accordion-inner {
+      padding: 0 1.5rem 1.5rem 1.5rem; font-size: 0.95rem; color: #b0bccc; line-height: 1.6;
     }
 
     .conditions-box {
-      margin-top: 1.5rem;
-      padding: 1.5rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 20px;
-      font-size: 0.95rem;
-      color: #b8c2d2;
-      line-height: 1.6;
+      margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px;
+      font-size: 0.95rem; color: #b8c2d2; line-height: 1.6;
     }
 
     /* ===== КОНТАКТЫ ===== */
-    .contact-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
+    .contact-container { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
 
-    /* Обычные анимации появления для остальных элементов */
+    /* ===== FADE-UP ===== */
     .fade-up {
-      opacity: 0;
-      transform: translateY(30px);
+      opacity: 0; transform: translateY(30px);
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
-
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 380px) {
       h1 { font-size: 2rem; }
@@ -465,15 +229,14 @@
 </head>
 <body>
 
-  <!-- Фон для параллакса -->
   <div id="parallax-bg"></div>
 
   <div id="app">
     <div class="app-content" id="app-content">
       
-      <!-- ================= ВКЛАДКА ГЛАВНАЯ ================= -->
+      <!-- ================= ГЛАВНАЯ ================= -->
       <div id="screen-home" class="screen active">
-        <div id="parallax-content" style="transition: transform 0.1s linear; will-change: transform;">
+        <div id="parallax-content">
           <div class="reveal-mask">
             <h1 class="reveal-text">Разработка Telegram-ботов и Mini Apps</h1>
           </div>
@@ -483,16 +246,46 @@
           <div class="reveal-mask">
             <button class="btn btn-primary reveal-text" style="transition-delay: 0.2s; margin-top: 1rem;" onclick="switchTab('projects')">Смотреть проекты</button>
           </div>
+
+          <!-- Продающая история -->
+          <div class="feature-grid">
+            <div class="feature-card fade-up">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div class="feature-content">
+                <h4>Скорость</h4>
+                <p>Создаю MVP за 3-5 дней. Без лишней воды.</p>
+              </div>
+            </div>
+            <div class="feature-card fade-up" style="transition-delay: 0.1s;">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+              </div>
+              <div class="feature-content">
+                <h4>Чистый код</h4>
+                <p>Без шаблонов и конструкторов. Только кастомная разработка.</p>
+              </div>
+            </div>
+            <div class="feature-card fade-up" style="transition-delay: 0.2s;">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="feature-content">
+                <h4>Поддержка</h4>
+                <p>14 дней бесплатных правок после запуска.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- ================= ВКЛАДКА ПРОЕКТЫ (СПИСОК) ================= -->
+      <!-- ================= ПРОЕКТЫ ================= -->
       <div id="screen-projects" class="screen">
         <div class="reveal-mask">
           <h2 class="reveal-text">Избранные работы</h2>
         </div>
         <div class="project-grid">
-          
           <div class="project-card fade-up" onclick="openProject('undefined-arch')">
             <img src="https://i.postimg.cc/Ss3PtTWZ/photo-1-2026-10-21-14-44-55.jpg" alt="UNDEFINED ARCH" class="project-card-img" loading="lazy">
             <div class="project-card-content">
@@ -500,7 +293,6 @@
               <p>Магазин UNDEFINED ARCH. Управление товарами с телефона, умный каталог, автоматические уведомления.</p>
             </div>
           </div>
-
           <div class="project-card fade-up" onclick="openProject('ai-bot')" style="transition-delay: 0.1s;">
             <img src="https://i.postimg.cc/fLpPg2ch/photo-7-2026-10-21-14-44-55.jpg" alt="AI-Бот Шведский стол" class="project-card-img" loading="lazy">
             <div class="project-card-content">
@@ -508,7 +300,6 @@
               <p>Шведский стол. Интеграция DeepSeek, автоматические триалы, сбор статистики. Работает 24/7.</p>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -516,7 +307,7 @@
       <div id="screen-project-undefined-arch" class="screen">
         <button class="btn-back fade-up" onclick="switchTab('projects')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          Назад к проектам
+          Назад
         </button>
         
         <div class="detail-header">
@@ -528,23 +319,26 @@
           </div>
         </div>
 
-        <!-- Галерея со скролл-сторителлингом -->
         <div class="gallery">
-          <div class="gallery-item">
-            <img src="https://i.postimg.cc/Ss3PtTWZ/photo-1-2026-10-21-14-44-55.jpg" alt="Каталог" loading="lazy">
-            <div class="gallery-caption">Каталог: Умная витрина. Проданные вещи уезжают вниз.</div>
+          <div class="story-block">
+            <img src="https://i.postimg.cc/Ss3PtTWZ/photo-1-2026-10-21-14-44-55.jpg" alt="Умный каталог" loading="lazy">
+            <div class="story-title">Умный каталог</div>
+            <div class="story-desc">Все товары с фото и ценами. Распроданные вещи автоматически становятся черно-белыми и уходят вниз.</div>
           </div>
-          <div class="gallery-item">
+          <div class="story-block">
             <img src="https://i.postimg.cc/j5m1kgzp/photo-2-2026-10-21-14-44-55.jpg" alt="Карточка товара" loading="lazy">
-            <div class="gallery-caption">Карточка: Свайп-галерея и заказ в один клик.</div>
+            <div class="story-title">Карточка товара</div>
+            <div class="story-desc">Свайп-галерея фото. Покупка в один клик без перехода на сайт.</div>
           </div>
-          <div class="gallery-item">
-            <img src="https://i.postimg.cc/26MtXc4M/photo-3-2026-10-21-14-44-55.jpg" alt="Админка" loading="lazy">
-            <div class="gallery-caption">Админка: Управление товарами с телефона.</div>
+          <div class="story-block">
+            <img src="https://i.postimg.cc/26MtXc4M/photo-3-2026-10-21-14-44-55.jpg" alt="Админ-панель" loading="lazy">
+            <div class="story-title">Админ-панель</div>
+            <div class="story-desc">Управление магазином прямо с телефона. Добавление товаров, смена цен, архивация.</div>
           </div>
-          <div class="gallery-item">
-            <img src="https://i.postimg.cc/wvZrbfXH/photo-9-2026-10-21-14-44-55.jpg" alt="Заказы" loading="lazy">
-            <div class="gallery-caption">Заказы: Мгновенные уведомления в бот.</div>
+          <div class="story-block">
+            <img src="https://i.postimg.cc/wvZrbfXH/photo-9-2026-10-21-14-44-55.jpg" alt="Мгновенные заказы" loading="lazy">
+            <div class="story-title">Мгновенные заказы</div>
+            <div class="story-desc">Клиент нажал "купить" — уведомление сразу пришло в Telegram-бот.</div>
           </div>
         </div>
 
@@ -562,7 +356,7 @@
       <div id="screen-project-ai-bot" class="screen">
         <button class="btn-back fade-up" onclick="switchTab('projects')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          Назад к проектам
+          Назад
         </button>
         
         <div class="detail-header">
@@ -575,21 +369,25 @@
         </div>
 
         <div class="gallery">
-          <div class="gallery-item">
-            <img src="https://i.postimg.cc/fLpPg2ch/photo-7-2026-10-21-14-44-55.jpg" alt="Ответ ИИ" loading="lazy">
-            <div class="gallery-caption">Ответ ИИ: Глубокий анализ ответов.</div>
+          <div class="story-block">
+            <img src="https://i.postimg.cc/fLpPg2ch/photo-7-2026-10-21-14-44-55.jpg" alt="Ответ нейросети" loading="lazy">
+            <div class="story-title">Ответ нейросети</div>
+            <div class="story-desc">DeepSeek анализирует ответы и выдает персональный разбор ситуации с рекомендациями.</div>
           </div>
-          <div class="gallery-item">
-            <img src="https://i.postimg.cc/vBkKSqrs/photo-8-2026-10-21-14-44-55.jpg" alt="Тест" loading="lazy">
-            <div class="gallery-caption">Тест: Удобный опрос из 15 вопросов.</div>
+          <div class="story-block">
+            <img src="https://i.postimg.cc/vBkKSqrs/photo-8-2026-10-21-14-44-55.jpg" alt="Умный тест" loading="lazy">
+            <div class="story-title">Умный тест</div>
+            <div class="story-desc">15 вопросов для точного подбора. Удобные кнопки и прогресс-бар.</div>
           </div>
-          <div class="gallery-item">
-            <img src="https://i.postimg.cc/pT4S1GD7/photo-5-2026-10-21-14-44-55.jpg" alt="Триал" loading="lazy">
-            <div class="gallery-caption">Триал: Автоматическая выдача доступа.</div>
+          <div class="story-block">
+            <img src="https://i.postimg.cc/pT4S1GD7/photo-5-2026-10-21-14-44-55.jpg" alt="Авто-триал" loading="lazy">
+            <div class="story-title">Авто-триал</div>
+            <div class="story-desc">Выдача пробного доступа на 5 минут в один клик.</div>
           </div>
-          <div class="gallery-item">
-            <img src="https://i.postimg.cc/pT4S1GfV/photo-13-2026-10-21-14-44-55.jpg" alt="База" loading="lazy">
-            <div class="gallery-caption">База: Сбор статистики клиентов.</div>
+          <div class="story-block">
+            <img src="https://i.postimg.cc/pT4S1GfV/photo-13-2026-10-21-14-44-55.jpg" alt="База клиентов" loading="lazy">
+            <div class="story-title">База клиентов</div>
+            <div class="story-desc">Сбор статистики и управление пользователями из админ-панели.</div>
           </div>
         </div>
 
@@ -603,35 +401,73 @@
         </div>
       </div>
 
-      <!-- ================= ВКЛАДКА УСЛУГИ ================= -->
+      <!-- ================= УСЛУГИ (АККОРДЕОН) ================= -->
       <div id="screen-services" class="screen">
         <div class="reveal-mask">
           <h2 class="reveal-text">Услуги</h2>
         </div>
         <div class="services-list">
-          <div class="service-card fade-up">
-            <h3>Бот под любые заказы</h3>
-            <div class="service-price">от 1 000 ₽</div>
-            <div class="service-desc">Сценарии диалога, прием заявок, меню, кнопки.</div>
+          
+          <div class="accordion-item fade-up">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <h3>Бот под любые заказы</h3>
+                <div class="price">от 1 000 ₽</div>
+              </div>
+              <div class="accordion-icon">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                Интеграция с CRM, автоматические рассылки, прием оплат.
+              </div>
+            </div>
           </div>
-          <div class="service-card fade-up" style="transition-delay: 0.1s;">
-            <h3>Мини-апп под любые заказы</h3>
-            <div class="service-price">от 1 000 ₽</div>
-            <div class="service-desc">Интерфейс внутри Telegram, каталог, запись.</div>
+
+          <div class="accordion-item fade-up" style="transition-delay: 0.1s;">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <h3>Мини-апп под любые заказы</h3>
+                <div class="price">от 1 000 ₽</div>
+              </div>
+              <div class="accordion-icon">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                Админ-панель для управления товарами, корзина, каталог с фильтрами.
+              </div>
+            </div>
           </div>
-          <div class="service-card fade-up" style="transition-delay: 0.2s;">
-            <h3>Интеграция с ИИ</h3>
-            <div class="service-price">от 2 000 ₽</div>
-            <div class="service-desc">Подключение ChatGPT/DeepSeek, умные ответы.</div>
+
+          <div class="accordion-item fade-up" style="transition-delay: 0.2s;">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <div class="accordion-title">
+                <h3>Интеграция с ИИ</h3>
+                <div class="price">от 2 000 ₽</div>
+              </div>
+              <div class="accordion-icon">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-content">
+              <div class="accordion-inner">
+                Векторная база знаний, умные ответы, интеграция с DeepSeek/GPT.
+              </div>
+            </div>
           </div>
+
         </div>
+        
         <div class="conditions-box fade-up" style="transition-delay: 0.3s;">
           <strong style="color:#fff; font-weight:500; display:block; margin-bottom:0.5rem;">Оплата по факту</strong>
           Сначала я делаю проект, вы смотрите, как он работает. Заплатили — я передал полный доступ. 14 дней бесплатной поддержки.
         </div>
       </div>
 
-      <!-- ================= ВКЛАДКА КОНТАКТЫ ================= -->
+      <!-- ================= КОНТАКТЫ ================= -->
       <div id="screen-contacts" class="screen">
         <div class="reveal-mask">
           <h2 class="reveal-text" style="margin-top: 1rem;">Контакты</h2>
@@ -672,7 +508,7 @@
   </div>
 
   <script>
-    // ===== TELEGRAM HAPTIC FEEDBACK =====
+    // ===== HAPTIC FEEDBACK =====
     function hapticFeedback() {
       if (window.Telegram?.WebApp?.HapticFeedback) {
         window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
@@ -686,14 +522,11 @@
     let currentTab = 'home';
 
     function switchTab(tabId) {
-      if (currentTab === tabId) return; // Избегаем лишних перерисовок
-      
-      hapticFeedback(); // Вибрация при переключении
+      if (currentTab === tabId) return;
+      hapticFeedback();
 
-      // 1. Скрываем все экраны
       screens.forEach(s => s.classList.remove('active'));
       
-      // 2. Показываем нужный
       let targetScreen;
       if (['home', 'projects', 'services', 'contacts'].includes(tabId)) {
         targetScreen = document.getElementById(`screen-${tabId}`);
@@ -703,11 +536,8 @@
         currentTab = tabId;
       }
 
-      if (targetScreen) {
-        targetScreen.classList.add('active');
-      }
+      if (targetScreen) targetScreen.classList.add('active');
 
-      // 3. Обновляем навигацию
       navItems.forEach(item => item.classList.remove('active'));
       if (['home', 'projects', 'services', 'contacts'].includes(tabId)) {
         document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active');
@@ -715,23 +545,19 @@
         document.querySelector(`.nav-item[data-tab="projects"]`).classList.add('active');
       }
 
-      // 4. Скролл наверх и сброс параллакса
       appContent.scrollTo({ top: 0, behavior: 'instant' });
+      
+      // Сброс параллакса
       document.getElementById('parallax-bg').style.transform = 'translateY(0)';
       const pContent = document.getElementById('parallax-content');
       if (pContent) pContent.style.transform = 'translateY(0)';
 
-      // 5. Перезапускаем анимации появления
       setTimeout(() => {
         initAnimations();
-        // Принудительно запускаем Reveal для заголовков (так как они не скроллятся)
-        document.querySelectorAll(`#screen-${tabId} .reveal-text`).forEach(el => {
-          el.classList.add('visible');
-        });
-        if (!['home', 'projects', 'services', 'contacts'].includes(tabId)) {
-           document.querySelectorAll(`#screen-project-${tabId} .reveal-text`).forEach(el => {
-            el.classList.add('visible');
-          });
+        // Принудительный запуск Reveal для активного экрана
+        const activeScreen = targetScreen;
+        if (activeScreen) {
+          activeScreen.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
         }
       }, 50);
     }
@@ -744,14 +570,39 @@
     window.switchTab = switchTab;
     window.openProject = openProject;
 
-    // ===== АНИМАЦИИ ПОЯВЛЕНИЯ (INTERSECTION OBSERVER) =====
+    // ===== АККОРДЕОН (УСЛУГИ) =====
+    function toggleAccordion(header) {
+      hapticFeedback();
+      const item = header.parentElement;
+      const content = item.querySelector('.accordion-content');
+      const isOpen = item.classList.contains('open');
+
+      // Закрываем все остальные
+      document.querySelectorAll('.accordion-item').forEach(other => {
+        if (other !== item && other.classList.contains('open')) {
+          other.classList.remove('open');
+          other.querySelector('.accordion-content').style.height = '0px';
+        }
+      });
+
+      if (isOpen) {
+        item.classList.remove('open');
+        content.style.height = '0px';
+      } else {
+        item.classList.add('open');
+        content.style.height = content.scrollHeight + 'px';
+      }
+    }
+    window.toggleAccordion = toggleAccordion;
+
+    // ===== INTERSECTION OBSERVER =====
     let observer;
 
     function initAnimations() {
-      const fadeElements = document.querySelectorAll('.screen.active .fade-up, .screen.active .gallery-item');
+      const elements = document.querySelectorAll('.screen.active .fade-up, .screen.active .story-block');
       
       if (!('IntersectionObserver' in window)) {
-        fadeElements.forEach(el => el.classList.add('visible'));
+        elements.forEach(el => el.classList.add('visible'));
         return;
       }
 
@@ -769,40 +620,28 @@
         rootMargin: '0px 0px -50px 0px'
       });
 
-      fadeElements.forEach(el => {
-        el.classList.remove('visible'); // Сбрасываем для повторного показа
+      elements.forEach(el => {
+        el.classList.remove('visible');
         observer.observe(el);
       });
     }
 
-    // ===== ПАРАЛЛАКС ЭФФЕКТ =====
+    // ===== ПАРАЛЛАКС =====
     appContent.addEventListener('scroll', () => {
       if (!document.getElementById('screen-home').classList.contains('active')) return;
-      
       const scrolled = appContent.scrollTop;
-      
-      // Фон двигается медленнее (создает глубину)
-      const bg = document.getElementById('parallax-bg');
-      bg.style.transform = `translateY(${scrolled * 0.4}px)`;
-      
-      // Контент двигается чуть быстрее (но все еще медленнее обычного скролла)
+      document.getElementById('parallax-bg').style.transform = `translateY(${scrolled * 0.4}px)`;
       const content = document.getElementById('parallax-content');
-      if (content) {
-        content.style.transform = `translateY(${scrolled * 0.15}px)`;
-      }
+      if (content) content.style.transform = `translateY(${scrolled * 0.15}px)`;
     });
 
     // ===== ИНИЦИАЛИЗАЦИЯ =====
     window.addEventListener('load', () => {
-      // Запускаем анимацию текста на главной
       setTimeout(() => {
-        document.querySelectorAll('#screen-home .reveal-text').forEach(el => {
-          el.classList.add('visible');
-        });
+        document.querySelectorAll('#screen-home .reveal-text').forEach(el => el.classList.add('visible'));
         initAnimations();
       }, 100);
       
-      // Инициализация Telegram WebApp
       if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.ready();
         window.Telegram.WebApp.expand();
