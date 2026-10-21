@@ -20,7 +20,7 @@
       overflow: hidden; position: relative;
     }
 
-    /* Параллакс-фон */
+    /* Параллакс-фон (только для главной) */
     #parallax-bg {
       position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: radial-gradient(circle at 10% 20%, #1c212c 0%, #0b0d12 80%);
@@ -34,7 +34,7 @@
     h3 { font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; }
     p { color: #b8c2d0; font-weight: 300; font-size: 1rem; }
 
-    /* ===== TEXT REVEAL (МАСКА) ===== */
+    /* ===== TEXT REVEAL ===== */
     .reveal-mask { overflow: hidden; display: block; padding-bottom: 0.1em; margin-bottom: -0.1em; }
     .reveal-text {
       display: block; transform: translateY(110%); opacity: 0;
@@ -52,21 +52,21 @@
     .app-content::-webkit-scrollbar { display: none; }
     .app-content { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* ===== НАВИГАЦИЯ ===== */
+    /* ===== НАВИГАЦИЯ (Минимализм Apple) ===== */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: 80px;
+      position: fixed; bottom: 0; left: 0; right: 0; height: 70px;
       display: flex; justify-content: space-around; align-items: center;
-      background: rgba(20, 25, 35, 0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px 28px 0 0;
+      background: rgba(15, 18, 25, 0.85); /* Темный фон без сильного размытия */
+      border-top: 1px solid rgba(255, 255, 255, 0.05); 
       padding-bottom: env(safe-area-inset-bottom); z-index: 1000;
     }
     .nav-item {
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-      color: #8a94a6; font-size: 0.7rem; font-weight: 500; cursor: pointer;
-      transition: all 0.3s ease; width: 60px; height: 60px; border-radius: 16px;
+      color: #5a6373; font-size: 0.7rem; font-weight: 500; cursor: pointer;
+      transition: color 0.3s ease; width: 60px; height: 60px;
       background: transparent; border: none;
     }
-    .nav-item.active { color: #fff; background: rgba(255, 255, 255, 0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .nav-item.active { color: #fff; }
     .nav-item svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
     /* ===== ЭКРАНЫ ===== */
@@ -77,84 +77,113 @@
     /* ===== КНОПКИ ===== */
     .btn {
       display: inline-flex; align-items: center; justify-content: center;
-      background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 14px; padding: 1rem 2rem;
-      font-size: 1rem; font-weight: 500; color: #fff; text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1); cursor: pointer;
+      background: #fff; border-radius: 14px; padding: 1rem 2rem;
+      font-size: 1rem; font-weight: 500; color: #000; text-decoration: none;
+      transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1); cursor: pointer;
       font-family: 'Inter', sans-serif; text-align: center; width: 100%;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); will-change: transform;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); will-change: transform;
     }
-    .btn:hover { background: rgba(255, 255, 255, 0.12); transform: scale(1.02); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-    .btn:active { transform: scale(0.98); }
-    .btn-primary { background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%); border: 1px solid rgba(255,255,255,0.25); }
+    .btn:active { transform: scale(0.97); }
+    .btn-outline { background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; }
 
     .btn-back {
       display: inline-flex; align-items: center; gap: 8px; background: transparent; border: none;
       color: #a0aab8; font-size: 1rem; font-weight: 400; padding: 0.5rem 0; margin-bottom: 1.5rem;
-      cursor: pointer; width: auto; box-shadow: none; transition: color 0.2s;
+      cursor: pointer; width: auto; transition: color 0.2s;
     }
-    .btn-back:hover { color: #fff; transform: none; box-shadow: none; background: transparent; }
+    .btn-back:active { color: #fff; }
     .btn-back svg { width: 20px; height: 20px; }
 
-    /* ===== ГЛАВНАЯ СТРАНИЦА (ИСТОРИЯ) ===== */
-    .feature-grid {
-      display: flex; flex-direction: column; gap: 1rem; margin-top: 2.5rem; margin-bottom: 1rem;
-    }
+    /* ===== ГЛАВНАЯ (Staggered Cards) ===== */
+    .hero-section { margin-bottom: 3rem; }
+    .feature-grid { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
     .feature-card {
       display: flex; align-items: flex-start; gap: 1rem;
-      background: rgba(30, 35, 48, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 1.25rem;
-      transition: transform 0.3s ease, border-color 0.3s;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px; padding: 1.25rem;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
     }
+    .feature-card.visible { opacity: 1; transform: translateY(0); }
     .feature-icon {
       flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center;
+      background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center;
     }
     .feature-icon svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .feature-content h4 { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 1rem; color: #fff; margin-bottom: 0.2rem; }
     .feature-content p { font-size: 0.9rem; color: #a0aab8; line-height: 1.4; }
 
-    /* ===== КАРТОЧКИ ПРОЕКТОВ ===== */
+    /* ===== КАРТОЧКИ ПРОЕКТОВ (Превью) ===== */
     .project-grid { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
     .project-card {
-      display: flex; flex-direction: column; background: rgba(30, 35, 48, 0.4);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; overflow: hidden;
-      cursor: pointer; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s;
-      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); will-change: transform;
+      cursor: pointer; transition: transform 0.3s ease;
     }
-    .project-card:hover { transform: translateY(-4px) scale(1.01); border-color: rgba(255, 255, 255, 0.2); }
-    .project-card-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .project-card:active { transform: scale(0.98); }
+    .project-card-img-wrapper { position: relative; width: 100%; height: 200px; background: #1a1f2b; }
+    .project-card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .project-card-content { padding: 1.5rem; }
 
-    /* ===== ДЕТАЛЬНЫЙ ЭКРАН (СКРОЛЛ-СТОРИТЕЛЛИНГ) ===== */
+    /* Skeleton Loader (Пульсация) */
+    .skeleton {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: #1a1f2b; animation: pulse 1.5s infinite ease-in-out;
+      z-index: 2;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    /* ===== ДЕТАЛЬНЫЙ ЭКРАН (Pinned Scroll Storytelling) ===== */
     .detail-header { margin-bottom: 2rem; }
     .detail-header p { font-size: 1.1rem; margin-bottom: 1.5rem; }
     
-    .gallery { display: flex; flex-direction: column; gap: 4rem; margin-bottom: 3rem; padding: 2rem 0; }
-    
+    .story-container {
+      display: flex; flex-direction: column; gap: 2rem;
+      margin-bottom: 3rem; padding: 1rem 0;
+    }
+
+    /* Сетка для сторителлинга (картинка слева, текст справа на десктопе, друг под другом на мобилке) */
     .story-block {
-      display: flex; flex-direction: column; gap: 0.8rem;
-      opacity: 0; transform: translateY(40px) scale(0.98);
+      display: flex; flex-direction: column; gap: 1.5rem;
+      opacity: 0; transform: translateY(30px);
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
-    .story-block.visible { opacity: 1; transform: translateY(0) scale(1); }
-    
-    .story-block img {
-      width: 100%; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7); object-fit: cover;
-      aspect-ratio: 9 / 16; background: rgba(255,255,255,0.02);
+    .story-block.visible { opacity: 1; transform: translateY(0); }
+
+    .story-image-wrapper {
+      position: relative; width: 100%; border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1); background: #1a1f2b;
+      /* Pinned эффект */
+      position: sticky; top: 20px; z-index: 10;
+    }
+    .story-image {
+      width: 100%; height: auto; display: block;
+      aspect-ratio: 9 / 16; object-fit: cover;
     }
     
-    /* Журнальный стиль подписей */
+    .story-text {
+      padding: 1rem 0; display: flex; flex-direction: column; justify-content: center;
+    }
     .story-title {
-      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600;
-      color: #fff; margin-top: 0.5rem; letter-spacing: -0.01em;
+      font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600;
+      color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.01em;
     }
     .story-desc {
-      font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #a0aab8;
+      font-family: 'Inter', sans-serif; font-size: 1rem; color: #a0aab8;
       line-height: 1.5; font-weight: 300;
+    }
+
+    /* Для широких экранов (если захотите) */
+    @media (min-width: 600px) {
+      .story-block { flex-direction: row; align-items: flex-start; gap: 2rem; }
+      .story-image-wrapper { width: 40%; position: sticky; top: 20px; }
+      .story-text { width: 60%; padding: 2rem 0; }
     }
 
     /* ===== БОЛИ ===== */
@@ -170,39 +199,15 @@
       color: #fff; font-size: 0.7rem;
     }
 
-    /* ===== УСЛУГИ (АККОРДЕОН) ===== */
-    .services-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
-    
-    .accordion-item {
-      background: rgba(30, 35, 48, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; overflow: hidden;
-      transition: border-color 0.3s;
+    /* ===== УСЛУГИ (Список без аккордеона) ===== */
+    .services-list { display: flex; flex-direction: column; gap: 2rem; margin-top: 1.5rem; }
+    .service-item {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .accordion-item.open { border-color: rgba(255, 255, 255, 0.2); }
-    
-    .accordion-header {
-      padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;
-      cursor: pointer; user-select: none; transition: background 0.3s;
-    }
-    .accordion-header:active { background: rgba(255, 255, 255, 0.05); }
-    .accordion-title h3 { font-size: 1.2rem; margin-bottom: 0.2rem; }
-    .accordion-title .price { font-size: 1rem; color: #8a94a6; font-weight: 500; }
-    
-    .accordion-icon {
-      width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: #8a94a6;
-    }
-    .accordion-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
-    .accordion-item.open .accordion-icon { transform: rotate(180deg); color: #fff; }
-
-    .accordion-content {
-      height: 0; overflow: hidden;
-      transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: height;
-    }
-    .accordion-inner {
-      padding: 0 1.5rem 1.5rem 1.5rem; font-size: 0.95rem; color: #b0bccc; line-height: 1.6;
-    }
+    .service-item:last-child { border-bottom: none; }
+    .service-item h3 { font-size: 1.5rem; margin-bottom: 0.2rem; }
+    .service-item p { font-size: 1rem; color: #a0aab8; }
 
     .conditions-box {
       margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.03);
@@ -215,11 +220,23 @@
 
     /* ===== FADE-UP ===== */
     .fade-up {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ===== ДОСТУПНОСТЬ (Сниженное движение) ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal-text { transform: translateY(0) !important; opacity: 1 !important; }
+      .feature-card, .story-block, .fade-up { opacity: 1 !important; transform: none !important; }
+    }
 
     @media (max-width: 380px) {
       h1 { font-size: 2rem; }
@@ -236,44 +253,41 @@
       
       <!-- ================= ГЛАВНАЯ ================= -->
       <div id="screen-home" class="screen active">
-        <div id="parallax-content">
+        <div id="parallax-content" class="hero-section">
           <div class="reveal-mask">
             <h1 class="reveal-text">Разработка Telegram-ботов и Mini Apps</h1>
           </div>
           <div class="reveal-mask">
-            <p class="reveal-text" style="transition-delay: 0.1s;">Создаю премиальные инструменты для бизнеса. Без шаблонов. Чистый код.</p>
-          </div>
-          <div class="reveal-mask">
-            <button class="btn btn-primary reveal-text" style="transition-delay: 0.2s; margin-top: 1rem;" onclick="switchTab('projects')">Смотреть проекты</button>
+            <p class="reveal-text" style="transition-delay: 0.1s;">Создаю ботов и Mini Apps, которые автоматизируют продажи и экономят ваше время. Никаких конструкторов — только кастомный код.</p>
           </div>
 
-          <!-- Продающая история -->
+          <!-- Три карточки с последовательным появлением -->
           <div class="feature-grid">
-            <div class="feature-card fade-up">
+            <div class="feature-card">
               <div class="feature-icon">
                 <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
               </div>
               <div class="feature-content">
                 <h4>Скорость</h4>
-                <p>Создаю MVP за 3-5 дней. Без лишней воды.</p>
+                <p>MVP за 3-5 дней.</p>
               </div>
             </div>
-            <div class="feature-card fade-up" style="transition-delay: 0.1s;">
+            <div class="feature-card">
               <div class="feature-icon">
                 <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
               </div>
               <div class="feature-content">
-                <h4>Чистый код</h4>
-                <p>Без шаблонов и конструкторов. Только кастомная разработка.</p>
+                <h4>Результат</h4>
+                <p>Бот, который выглядит как продукт, а не как конструктор.</p>
               </div>
             </div>
-            <div class="feature-card fade-up" style="transition-delay: 0.2s;">
+            <div class="feature-card">
               <div class="feature-icon">
                 <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               </div>
               <div class="feature-content">
-                <h4>Поддержка</h4>
-                <p>14 дней бесплатных правок после запуска.</p>
+                <h4>Доверие</h4>
+                <p>Оплата по факту (сначала показываю результат).</p>
               </div>
             </div>
           </div>
@@ -286,20 +300,29 @@
           <h2 class="reveal-text">Избранные работы</h2>
         </div>
         <div class="project-grid">
+          
           <div class="project-card fade-up" onclick="openProject('undefined-arch')">
-            <img src="https://i.postimg.cc/Ss3PtTWZ/photo-1-2026-10-21-14-44-55.jpg" alt="UNDEFINED ARCH" class="project-card-img" loading="lazy">
+            <div class="project-card-img-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/rsnNp6Rb/logo.jpg" alt="Магазин" class="project-card-img" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
             <div class="project-card-content">
-              <h3>E-commerce Mini App</h3>
-              <p>Магазин UNDEFINED ARCH. Управление товарами с телефона, умный каталог, автоматические уведомления.</p>
+              <h3>Магазин, который принимает заказы без переписки</h3>
+              <p>UNDEFINED ARCH. Управление товарами с телефона, умный каталог, автоматические уведомления.</p>
             </div>
           </div>
+
           <div class="project-card fade-up" onclick="openProject('ai-bot')" style="transition-delay: 0.1s;">
-            <img src="https://i.postimg.cc/fLpPg2ch/photo-7-2026-10-21-14-44-55.jpg" alt="AI-Бот Шведский стол" class="project-card-img" loading="lazy">
+            <div class="project-card-img-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/sDxJN2tC/cdab447d7a9ac257c5a56dba0fc49f3a.jpg" alt="AI-Бот" class="project-card-img" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
             <div class="project-card-content">
-              <h3>AI-Бот с подпиской</h3>
+              <h3>Бот, который отвечает на 80% вопросов без тебя</h3>
               <p>Шведский стол. Интеграция DeepSeek, автоматические триалы, сбор статистики. Работает 24/7.</p>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -319,26 +342,50 @@
           </div>
         </div>
 
-        <div class="gallery">
+        <div class="story-container">
+          <!-- Блок 1 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/Ss3PtTWZ/photo-1-2026-10-21-14-44-55.jpg" alt="Умный каталог" loading="lazy">
-            <div class="story-title">Умный каталог</div>
-            <div class="story-desc">Все товары с фото и ценами. Распроданные вещи автоматически становятся черно-белыми и уходят вниз.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/Ss3PtTWZ/photo-1-2026-10-21-14-44-55.jpg" alt="Умный каталог" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">Умный каталог</div>
+              <div class="story-desc">Все товары с фото и ценами. Распроданные вещи автоматически становятся черно-белыми и уходят вниз.</div>
+            </div>
           </div>
+          <!-- Блок 2 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/j5m1kgzp/photo-2-2026-10-21-14-44-55.jpg" alt="Карточка товара" loading="lazy">
-            <div class="story-title">Карточка товара</div>
-            <div class="story-desc">Свайп-галерея фото. Покупка в один клик без перехода на сайт.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/j5m1kgzp/photo-2-2026-10-21-14-44-55.jpg" alt="Карточка товара" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">Карточка товара</div>
+              <div class="story-desc">Свайп-галерея фото. Покупка в один клик без перехода на сайт.</div>
+            </div>
           </div>
+          <!-- Блок 3 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/26MtXc4M/photo-3-2026-10-21-14-44-55.jpg" alt="Админ-панель" loading="lazy">
-            <div class="story-title">Админ-панель</div>
-            <div class="story-desc">Управление магазином прямо с телефона. Добавление товаров, смена цен, архивация.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/fLpPg2cs/photo-6-2026-10-21-14-44-55.jpg" alt="Админ-панель" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">Админ-панель</div>
+              <div class="story-desc">Управление магазином прямо с телефона. Добавление товаров, смена цен, архивация.</div>
+            </div>
           </div>
+          <!-- Блок 4 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/wvZrbfXH/photo-9-2026-10-21-14-44-55.jpg" alt="Мгновенные заказы" loading="lazy">
-            <div class="story-title">Мгновенные заказы</div>
-            <div class="story-desc">Клиент нажал "купить" — уведомление сразу пришло в Telegram-бот.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/j5m1kgHs/photo-12-2026-10-21-14-44-55.jpg" alt="Мгновенные заказы" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">Мгновенные заказы</div>
+              <div class="story-desc">Клиент нажал "купить" — уведомление сразу пришло в Telegram-бот.</div>
+            </div>
           </div>
         </div>
 
@@ -368,26 +415,50 @@
           </div>
         </div>
 
-        <div class="gallery">
+        <div class="story-container">
+          <!-- Блок 1 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/fLpPg2ch/photo-7-2026-10-21-14-44-55.jpg" alt="Ответ нейросети" loading="lazy">
-            <div class="story-title">Ответ нейросети</div>
-            <div class="story-desc">DeepSeek анализирует ответы и выдает персональный разбор ситуации с рекомендациями.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/wvZrbfXH/photo-9-2026-10-21-14-44-55.jpg" alt="Ответ нейросети" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">Ответ нейросети</div>
+              <div class="story-desc">DeepSeek анализирует ответы и выдает персональный разбор ситуации с рекомендациями.</div>
+            </div>
           </div>
+          <!-- Блок 2 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/vBkKSqrs/photo-8-2026-10-21-14-44-55.jpg" alt="Умный тест" loading="lazy">
-            <div class="story-title">Умный тест</div>
-            <div class="story-desc">15 вопросов для точного подбора. Удобные кнопки и прогресс-бар.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/vBkKSqrs/photo-8-2026-10-21-14-44-55.jpg" alt="Умный тест" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">Умный тест</div>
+              <div class="story-desc">15 вопросов для точного подбора. Удобные кнопки и прогресс-бар.</div>
+            </div>
           </div>
+          <!-- Блок 3 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/pT4S1GD7/photo-5-2026-10-21-14-44-55.jpg" alt="Авто-триал" loading="lazy">
-            <div class="story-title">Авто-триал</div>
-            <div class="story-desc">Выдача пробного доступа на 5 минут в один клик.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/cH2z59R0/photo-10-2026-10-21-14-44-55.jpg" alt="Авто-триал" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">Авто-триал</div>
+              <div class="story-desc">Выдача пробного доступа на 5 минут в один клик.</div>
+            </div>
           </div>
+          <!-- Блок 4 -->
           <div class="story-block">
-            <img src="https://i.postimg.cc/pT4S1GfV/photo-13-2026-10-21-14-44-55.jpg" alt="База клиентов" loading="lazy">
-            <div class="story-title">База клиентов</div>
-            <div class="story-desc">Сбор статистики и управление пользователями из админ-панели.</div>
+            <div class="story-image-wrapper">
+              <div class="skeleton"></div>
+              <img src="https://i.postimg.cc/pT4S1GfV/photo-13-2026-10-21-14-44-55.jpg" alt="База клиентов" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="story-text">
+              <div class="story-title">База клиентов</div>
+              <div class="story-desc">Сбор статистики и управление пользователями из админ-панели.</div>
+            </div>
           </div>
         </div>
 
@@ -401,62 +472,26 @@
         </div>
       </div>
 
-      <!-- ================= УСЛУГИ (АККОРДЕОН) ================= -->
+      <!-- ================= УСЛУГИ ================= -->
       <div id="screen-services" class="screen">
         <div class="reveal-mask">
           <h2 class="reveal-text">Услуги</h2>
         </div>
         <div class="services-list">
           
-          <div class="accordion-item fade-up">
-            <div class="accordion-header" onclick="toggleAccordion(this)">
-              <div class="accordion-title">
-                <h3>Бот под любые заказы</h3>
-                <div class="price">от 1 000 ₽</div>
-              </div>
-              <div class="accordion-icon">
-                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-            </div>
-            <div class="accordion-content">
-              <div class="accordion-inner">
-                Интеграция с CRM, автоматические рассылки, прием оплат.
-              </div>
-            </div>
+          <div class="service-item fade-up">
+            <h3>Бот под любые заказы</h3>
+            <p>Интеграция с CRM, автоматические рассылки, прием оплат. От 1 000 ₽.</p>
           </div>
 
-          <div class="accordion-item fade-up" style="transition-delay: 0.1s;">
-            <div class="accordion-header" onclick="toggleAccordion(this)">
-              <div class="accordion-title">
-                <h3>Мини-апп под любые заказы</h3>
-                <div class="price">от 1 000 ₽</div>
-              </div>
-              <div class="accordion-icon">
-                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-            </div>
-            <div class="accordion-content">
-              <div class="accordion-inner">
-                Админ-панель для управления товарами, корзина, каталог с фильтрами.
-              </div>
-            </div>
+          <div class="service-item fade-up" style="transition-delay: 0.1s;">
+            <h3>Мини-апп под любые заказы</h3>
+            <p>Админ-панель для управления товарами, корзина, каталог с фильтрами. От 1 000 ₽.</p>
           </div>
 
-          <div class="accordion-item fade-up" style="transition-delay: 0.2s;">
-            <div class="accordion-header" onclick="toggleAccordion(this)">
-              <div class="accordion-title">
-                <h3>Интеграция с ИИ</h3>
-                <div class="price">от 2 000 ₽</div>
-              </div>
-              <div class="accordion-icon">
-                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-            </div>
-            <div class="accordion-content">
-              <div class="accordion-inner">
-                Векторная база знаний, умные ответы, интеграция с DeepSeek/GPT.
-              </div>
-            </div>
+          <div class="service-item fade-up" style="transition-delay: 0.2s;">
+            <h3>Интеграция с ИИ</h3>
+            <p>Векторная база знаний, умные ответы, интеграция с DeepSeek/GPT. От 2 000 ₽.</p>
           </div>
 
         </div>
@@ -476,8 +511,8 @@
           <p class="reveal-text" style="transition-delay: 0.1s;">Открыт для новых проектов и идей. Свяжитесь со мной удобным способом.</p>
         </div>
         <div class="contact-container fade-up" style="transition-delay: 0.2s;">
-          <a href="https://t.me/Piholaa" target="_blank" rel="noopener" class="btn btn-primary" onclick="hapticFeedback()">Написать мне</a>
-          <a href="https://t.me/+WX0lumDl0s4yMTky" target="_blank" rel="noopener" class="btn" onclick="hapticFeedback()">Отзывы</a>
+          <a href="https://t.me/Piholaa" target="_blank" rel="noopener" class="btn" onclick="hapticFeedback()">Написать мне</a>
+          <a href="https://t.me/+WX0lumDl0s4yMTky" target="_blank" rel="noopener" class="btn btn-outline" onclick="hapticFeedback()">Отзывы</a>
         </div>
         <div style="text-align: center; margin-top: 3rem; font-size: 0.8rem; color: #5a6373;" class="fade-up">
           Made with custom code. No templates.
@@ -547,17 +582,17 @@
 
       appContent.scrollTo({ top: 0, behavior: 'instant' });
       
-      // Сброс параллакса
-      document.getElementById('parallax-bg').style.transform = 'translateY(0)';
-      const pContent = document.getElementById('parallax-content');
-      if (pContent) pContent.style.transform = 'translateY(0)';
+      // Сброс параллакса только на главной
+      if (tabId === 'home') {
+        const pContent = document.getElementById('parallax-content');
+        if (pContent) pContent.style.transform = 'translateY(0)';
+        document.getElementById('parallax-bg').style.transform = 'translateY(0)';
+      }
 
       setTimeout(() => {
         initAnimations();
-        // Принудительный запуск Reveal для активного экрана
-        const activeScreen = targetScreen;
-        if (activeScreen) {
-          activeScreen.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
+        if (targetScreen) {
+          targetScreen.querySelectorAll('.reveal-text').forEach(el => el.classList.add('visible'));
         }
       }, 50);
     }
@@ -570,36 +605,11 @@
     window.switchTab = switchTab;
     window.openProject = openProject;
 
-    // ===== АККОРДЕОН (УСЛУГИ) =====
-    function toggleAccordion(header) {
-      hapticFeedback();
-      const item = header.parentElement;
-      const content = item.querySelector('.accordion-content');
-      const isOpen = item.classList.contains('open');
-
-      // Закрываем все остальные
-      document.querySelectorAll('.accordion-item').forEach(other => {
-        if (other !== item && other.classList.contains('open')) {
-          other.classList.remove('open');
-          other.querySelector('.accordion-content').style.height = '0px';
-        }
-      });
-
-      if (isOpen) {
-        item.classList.remove('open');
-        content.style.height = '0px';
-      } else {
-        item.classList.add('open');
-        content.style.height = content.scrollHeight + 'px';
-      }
-    }
-    window.toggleAccordion = toggleAccordion;
-
-    // ===== INTERSECTION OBSERVER =====
+    // ===== INTERSECTION OBSERVER (Появление и Staggered) =====
     let observer;
 
     function initAnimations() {
-      const elements = document.querySelectorAll('.screen.active .fade-up, .screen.active .story-block');
+      const elements = document.querySelectorAll('.screen.active .fade-up, .screen.active .story-block, .screen.active .feature-card');
       
       if (!('IntersectionObserver' in window)) {
         elements.forEach(el => el.classList.add('visible'));
@@ -620,17 +630,30 @@
         rootMargin: '0px 0px -50px 0px'
       });
 
-      elements.forEach(el => {
+      elements.forEach((el, index) => {
         el.classList.remove('visible');
+        
+        // Staggered анимация для главной страницы
+        if (el.classList.contains('feature-card')) {
+          el.style.transitionDelay = `${index * 0.15}s`;
+        } else {
+          el.style.transitionDelay = '0s'; // Сброс для остальных
+        }
+        
         observer.observe(el);
       });
     }
 
-    // ===== ПАРАЛЛАКС =====
+    // ===== ПАРАЛЛАКС (Только для главной) =====
     appContent.addEventListener('scroll', () => {
       if (!document.getElementById('screen-home').classList.contains('active')) return;
       const scrolled = appContent.scrollTop;
-      document.getElementById('parallax-bg').style.transform = `translateY(${scrolled * 0.4}px)`;
+      
+      // Параллакс для фона
+      const bg = document.getElementById('parallax-bg');
+      if (bg) bg.style.transform = `translateY(${scrolled * 0.4}px)`;
+      
+      // Параллакс для контента (чуть быстрее)
       const content = document.getElementById('parallax-content');
       if (content) content.style.transform = `translateY(${scrolled * 0.15}px)`;
     });
