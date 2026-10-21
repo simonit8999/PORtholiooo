@@ -32,7 +32,7 @@
     h1 { font-size: 2.4rem; background: linear-gradient(135deg, #ffffff 0%, #a0aab8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 1rem; }
     h2 { font-size: 1.8rem; color: #e0e5eb; margin-bottom: 1rem; }
     h3 { font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; }
-    p { color: #b8c2d0; font-weight: 300; font-size: 1rem; }
+    p { color: #b8c2d0; font-weight: 300; font-size: 1rem; line-height: 1.6; }
 
     /* ===== TEXT REVEAL ===== */
     .reveal-mask { overflow: hidden; display: block; padding-bottom: 0.1em; margin-bottom: -0.1em; }
@@ -46,7 +46,8 @@
     /* ===== СТРУКТУРА ===== */
     #app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100vw; overflow: hidden; }
     .app-content {
-      flex: 1; overflow-y: auto; overflow-x: hidden; padding: 2rem 1.2rem 100px 1.2rem;
+      flex: 1; overflow-y: auto; overflow-x: hidden; 
+      padding: 2rem 1.2rem 120px 1.2rem; /* Увеличен padding-bottom */
       scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
     }
     .app-content::-webkit-scrollbar { display: none; }
@@ -76,15 +77,22 @@
 
     /* ===== КНОПКИ ===== */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
       background: #fff; border-radius: 14px; padding: 1rem 2rem;
       font-size: 1rem; font-weight: 500; color: #000; text-decoration: none;
       transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1); cursor: pointer;
       font-family: 'Inter', sans-serif; text-align: center; width: 100%;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); will-change: transform;
+      border: none;
     }
     .btn:active { transform: scale(0.97); }
-    .btn-outline { background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; }
+    .btn-glass { 
+      background: rgba(255, 255, 255, 0.08); 
+      border: 1px solid rgba(255, 255, 255, 0.15); 
+      color: #fff; 
+      backdrop-filter: blur(10px);
+    }
+    .btn svg { width: 20px; height: 20px; fill: currentColor; }
 
     .btn-back {
       display: inline-flex; align-items: center; gap: 8px; background: transparent; border: none;
@@ -92,7 +100,7 @@
       cursor: pointer; width: auto; transition: color 0.2s;
     }
     .btn-back:active { color: #fff; }
-    .btn-back svg { width: 20px; height: 20px; }
+    .btn-back svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
 
     /* ===== ГЛАВНАЯ (Staggered Cards) ===== */
     .hero-section { margin-bottom: 3rem; }
@@ -126,7 +134,7 @@
     .project-card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .project-card-content { padding: 1.5rem; }
 
-    /* Skeleton Loader (Пульсация) */
+    /* Skeleton Loader */
     .skeleton {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       background: #1a1f2b; animation: pulse 1.5s infinite ease-in-out;
@@ -138,68 +146,36 @@
       100% { opacity: 0.6; }
     }
 
-    /* ===== ДЕТАЛЬНЫЙ ЭКРАН (Pinned Scroll Storytelling) ===== */
-    .detail-header { margin-bottom: 2rem; }
-    .detail-header p { font-size: 1.1rem; margin-bottom: 1.5rem; }
-    
-    .story-container {
-      display: flex; flex-direction: column; gap: 2rem;
-      margin-bottom: 3rem; padding: 1rem 0;
+    /* ===== ДЕТАЛЬНЫЙ ЭКРАН (Кейс-стади) ===== */
+    .case-study-cover {
+      width: 100%; height: 240px; border-radius: 24px; overflow: hidden;
+      margin-bottom: 1.5rem; position: relative; background: #1a1f2b;
+    }
+    .case-study-cover img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
     }
 
-    /* Сетка для сторителлинга (картинка слева, текст справа на десктопе, друг под другом на мобилке) */
+    .case-study-header { margin-bottom: 2.5rem; }
+    .case-study-header h1 { font-size: 2.2rem; line-height: 1.15; margin-bottom: 1rem; }
+
     .story-block {
-      display: flex; flex-direction: column; gap: 1.5rem;
+      margin-bottom: 2.5rem;
       opacity: 0; transform: translateY(30px);
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
     .story-block.visible { opacity: 1; transform: translateY(0); }
 
-    .story-image-wrapper {
-      position: relative; width: 100%; border-radius: 20px; overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1); background: #1a1f2b;
-      /* Pinned эффект */
-      position: sticky; top: 20px; z-index: 10;
+    .story-block h3 {
+      font-size: 1.3rem; margin-bottom: 0.8rem; color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem;
+      display: inline-block;
     }
-    .story-image {
-      width: 100%; height: auto; display: block;
-      aspect-ratio: 9 / 16; object-fit: cover;
-    }
-    
-    .story-text {
-      padding: 1rem 0; display: flex; flex-direction: column; justify-content: center;
-    }
-    .story-title {
-      font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600;
-      color: #fff; margin-bottom: 0.5rem; letter-spacing: -0.01em;
-    }
-    .story-desc {
-      font-family: 'Inter', sans-serif; font-size: 1rem; color: #a0aab8;
-      line-height: 1.5; font-weight: 300;
-    }
+    .story-block p { font-size: 1.05rem; color: #b8c2d0; }
 
-    /* Для широких экранов (если захотите) */
-    @media (min-width: 600px) {
-      .story-block { flex-direction: row; align-items: flex-start; gap: 2rem; }
-      .story-image-wrapper { width: 40%; position: sticky; top: 20px; }
-      .story-text { width: 60%; padding: 2rem 0; }
-    }
+    .case-study-cta { margin-top: 3rem; margin-bottom: 2rem; }
 
-    /* ===== БОЛИ ===== */
-    .pain-points {
-      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 20px; padding: 1.5rem; margin-top: 1rem;
-    }
-    .pain-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1rem; }
-    .pain-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; color: #c0c8d4; }
-    .pain-icon {
-      flex-shrink: 0; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 0.7rem;
-    }
-
-    /* ===== УСЛУГИ (Список без аккордеона) ===== */
+    /* ===== УСЛУГИ ===== */
     .services-list { display: flex; flex-direction: column; gap: 2rem; margin-top: 1.5rem; }
     .service-item {
       display: flex; flex-direction: column; gap: 0.5rem;
@@ -226,7 +202,7 @@
     }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* ===== ДОСТУПНОСТЬ (Сниженное движение) ===== */
+    /* ===== ДОСТУПНОСТЬ ===== */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -240,7 +216,7 @@
 
     @media (max-width: 380px) {
       h1 { font-size: 2rem; }
-      .app-content { padding: 1.5rem 1rem 90px 1rem; }
+      .app-content { padding: 1.5rem 1rem 120px 1rem; }
     }
   </style>
 </head>
@@ -261,34 +237,18 @@
             <p class="reveal-text" style="transition-delay: 0.1s;">Создаю ботов и Mini Apps, которые автоматизируют продажи и экономят ваше время. Никаких конструкторов — только кастомный код.</p>
           </div>
 
-          <!-- Три карточки с последовательным появлением -->
           <div class="feature-grid">
             <div class="feature-card">
-              <div class="feature-icon">
-                <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-              </div>
-              <div class="feature-content">
-                <h4>Скорость</h4>
-                <p>MVP за 3-5 дней.</p>
-              </div>
+              <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+              <div class="feature-content"><h4>Скорость</h4><p>MVP за 3-5 дней.</p></div>
             </div>
             <div class="feature-card">
-              <div class="feature-icon">
-                <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
-              </div>
-              <div class="feature-content">
-                <h4>Результат</h4>
-                <p>Бот, который выглядит как продукт, а не как конструктор.</p>
-              </div>
+              <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+              <div class="feature-content"><h4>Результат</h4><p>Бот, который выглядит как продукт, а не как конструктор.</p></div>
             </div>
             <div class="feature-card">
-              <div class="feature-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              </div>
-              <div class="feature-content">
-                <h4>Доверие</h4>
-                <p>Оплата по факту (сначала показываю результат).</p>
-              </div>
+              <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="feature-content"><h4>Доверие</h4><p>Оплата по факту (сначала показываю результат).</p></div>
             </div>
           </div>
         </div>
@@ -326,149 +286,81 @@
         </div>
       </div>
 
-      <!-- ================= ДЕТАЛЬНЫЙ ЭКРАН 1 ================= -->
+      <!-- ================= КЕЙС 1 (UNDEFINED ARCH) ================= -->
       <div id="screen-project-undefined-arch" class="screen">
         <button class="btn-back fade-up" onclick="switchTab('projects')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          Назад
+          Назад к проектам
         </button>
         
-        <div class="detail-header">
-          <div class="reveal-mask">
-            <h1 class="reveal-text" style="font-size: 2rem;">UNDEFINED ARCH</h1>
-          </div>
-          <div class="reveal-mask">
-            <p class="reveal-text" style="transition-delay: 0.1s;">Полноценный E-commerce магазин внутри Telegram. Управление товарами с телефона, умный каталог, автоматические уведомления о заказах.</p>
-          </div>
+        <div class="case-study-cover fade-up">
+          <div class="skeleton"></div>
+          <img src="https://i.postimg.cc/rsnNp6Rb/logo.jpg" alt="UNDEFINED ARCH" loading="lazy" onload="this.previousElementSibling.style.display='none'">
         </div>
 
-        <div class="story-container">
-          <!-- Блок 1 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/Ss3PtTWZ/photo-1-2026-10-21-14-44-55.jpg" alt="Умный каталог" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">Умный каталог</div>
-              <div class="story-desc">Все товары с фото и ценами. Распроданные вещи автоматически становятся черно-белыми и уходят вниз.</div>
-            </div>
-          </div>
-          <!-- Блок 2 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/j5m1kgzp/photo-2-2026-10-21-14-44-55.jpg" alt="Карточка товара" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">Карточка товара</div>
-              <div class="story-desc">Свайп-галерея фото. Покупка в один клик без перехода на сайт.</div>
-            </div>
-          </div>
-          <!-- Блок 3 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/fLpPg2cs/photo-6-2026-10-21-14-44-55.jpg" alt="Админ-панель" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">Админ-панель</div>
-              <div class="story-desc">Управление магазином прямо с телефона. Добавление товаров, смена цен, архивация.</div>
-            </div>
-          </div>
-          <!-- Блок 4 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/j5m1kgHs/photo-12-2026-10-21-14-44-55.jpg" alt="Мгновенные заказы" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">Мгновенные заказы</div>
-              <div class="story-desc">Клиент нажал "купить" — уведомление сразу пришло в Telegram-бот.</div>
-            </div>
-          </div>
+        <div class="case-study-header">
+          <h1 class="reveal-text visible">Магазин, который принимает заказы без переписки</h1>
         </div>
 
-        <div class="pain-points fade-up">
+        <div class="story-block">
+          <h3>Задача клиента</h3>
+          <p>Реселлер одежды терял клиентов, так как все заказы шли через личные сообщения. Нужно было создать витрину внутри Telegram, чтобы клиент мог сам выбрать товар и оформить заказ в 2 клика.</p>
+        </div>
+
+        <div class="story-block">
+          <h3>Какие решения были приняты</h3>
+          <p>Разработал Mini App с умным каталогом. Распроданные вещи автоматически уходят вниз. Добавил админ-панель, чтобы владелец управлял товарами прямо с телефона, а заказы приходят мгновенно в бот.</p>
+        </div>
+
+        <div class="story-block">
           <h3>Какие боли решает</h3>
-          <div class="pain-list">
-            <div class="pain-item"><div class="pain-icon">✔</div>Избавляет от ручной обработки заказов</div>
-            <div class="pain-item"><div class="pain-icon">✔</div>Автоматизирует продажи 24/7</div>
-            <div class="pain-item"><div class="pain-icon">✔</div>Создает премиум-образ бренда</div>
-          </div>
+          <p>Избавляет от ручной обработки заказов, автоматизирует продажи 24/7, создает премиум-образ бренда.</p>
+        </div>
+
+        <div class="case-study-cta fade-up">
+          <a href="https://t.me/UndefinedBuyBot" target="_blank" rel="noopener" class="btn btn-glass" onclick="hapticFeedback()">
+            <svg viewBox="0 0 24 24"><path d="M21.5 2.5L2.5 9.5l7 3.5 3.5 7 8.5-17.5zM9.5 13l11-8.5-8.5 11.5-2.5-3z"/></svg>
+            Открыть магазин в Telegram
+          </a>
         </div>
       </div>
 
-      <!-- ================= ДЕТАЛЬНЫЙ ЭКРАН 2 ================= -->
+      <!-- ================= КЕЙС 2 (AI-БОТ) ================= -->
       <div id="screen-project-ai-bot" class="screen">
         <button class="btn-back fade-up" onclick="switchTab('projects')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          Назад
+          Назад к проектам
         </button>
         
-        <div class="detail-header">
-          <div class="reveal-mask">
-            <h1 class="reveal-text" style="font-size: 2rem;">AI-Бот "Шведский стол"</h1>
-          </div>
-          <div class="reveal-mask">
-            <p class="reveal-text" style="transition-delay: 0.1s;">Интеграция DeepSeek с валидацией галлюцинаций. Автоматические триалы, напоминания и сбор статистики. Бот работает 24/7.</p>
-          </div>
+        <div class="case-study-cover fade-up">
+          <div class="skeleton"></div>
+          <img src="https://i.postimg.cc/sDxJN2tC/cdab447d7a9ac257c5a56dba0fc49f3a.jpg" alt="AI-Бот" loading="lazy" onload="this.previousElementSibling.style.display='none'">
         </div>
 
-        <div class="story-container">
-          <!-- Блок 1 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/wvZrbfXH/photo-9-2026-10-21-14-44-55.jpg" alt="Ответ нейросети" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">Ответ нейросети</div>
-              <div class="story-desc">DeepSeek анализирует ответы и выдает персональный разбор ситуации с рекомендациями.</div>
-            </div>
-          </div>
-          <!-- Блок 2 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/vBkKSqrs/photo-8-2026-10-21-14-44-55.jpg" alt="Умный тест" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">Умный тест</div>
-              <div class="story-desc">15 вопросов для точного подбора. Удобные кнопки и прогресс-бар.</div>
-            </div>
-          </div>
-          <!-- Блок 3 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/cH2z59R0/photo-10-2026-10-21-14-44-55.jpg" alt="Авто-триал" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">Авто-триал</div>
-              <div class="story-desc">Выдача пробного доступа на 5 минут в один клик.</div>
-            </div>
-          </div>
-          <!-- Блок 4 -->
-          <div class="story-block">
-            <div class="story-image-wrapper">
-              <div class="skeleton"></div>
-              <img src="https://i.postimg.cc/pT4S1GfV/photo-13-2026-10-21-14-44-55.jpg" alt="База клиентов" class="story-image" loading="lazy" onload="this.previousElementSibling.style.display='none'">
-            </div>
-            <div class="story-text">
-              <div class="story-title">База клиентов</div>
-              <div class="story-desc">Сбор статистики и управление пользователями из админ-панели.</div>
-            </div>
-          </div>
+        <div class="case-study-header">
+          <h1 class="reveal-text visible">Бот, который отвечает на 80% вопросов без тебя</h1>
         </div>
 
-        <div class="pain-points fade-up">
+        <div class="story-block">
+          <h3>Задача клиента</h3>
+          <p>Онлайн-школа тратила часы на ручные консультации и подбор курсов. Нужно было автоматизировать процесс и собирать базу клиентов.</p>
+        </div>
+
+        <div class="story-block">
+          <h3>Какие решения были приняты</h3>
+          <p>Внедрил нейросеть DeepSeek с валидацией галлюцинаций. Бот проводит тест из 15 вопросов, анализирует ответы и выдает персональные рекомендации. Добавил автоматические триалы и сбор статистики.</p>
+        </div>
+
+        <div class="story-block">
           <h3>Какие боли решает</h3>
-          <div class="pain-list">
-            <div class="pain-item"><div class="pain-icon">✔</div>Экономит время на консультациях</div>
-            <div class="pain-item"><div class="pain-icon">✔</div>Собирает базу клиентов</div>
-            <div class="pain-item"><div class="pain-icon">✔</div>Прогревает лидов перед покупкой</div>
-          </div>
+          <p>Экономит время на консультациях, собирает базу клиентов, прогревает лидов перед покупкой.</p>
+        </div>
+
+        <div class="case-study-cta fade-up">
+          <a href="https://t.me/shstolbot" target="_blank" rel="noopener" class="btn btn-glass" onclick="hapticFeedback()">
+            <svg viewBox="0 0 24 24"><path d="M21.5 2.5L2.5 9.5l7 3.5 3.5 7 8.5-17.5zM9.5 13l11-8.5-8.5 11.5-2.5-3z"/></svg>
+            Открыть бота в Telegram
+          </a>
         </div>
       </div>
 
@@ -512,7 +404,7 @@
         </div>
         <div class="contact-container fade-up" style="transition-delay: 0.2s;">
           <a href="https://t.me/Piholaa" target="_blank" rel="noopener" class="btn" onclick="hapticFeedback()">Написать мне</a>
-          <a href="https://t.me/+WX0lumDl0s4yMTky" target="_blank" rel="noopener" class="btn btn-outline" onclick="hapticFeedback()">Отзывы</a>
+          <a href="https://t.me/+WX0lumDl0s4yMTky" target="_blank" rel="noopener" class="btn btn-glass" onclick="hapticFeedback()">Отзывы</a>
         </div>
         <div style="text-align: center; margin-top: 3rem; font-size: 0.8rem; color: #5a6373;" class="fade-up">
           Made with custom code. No templates.
@@ -582,7 +474,6 @@
 
       appContent.scrollTo({ top: 0, behavior: 'instant' });
       
-      // Сброс параллакса только на главной
       if (tabId === 'home') {
         const pContent = document.getElementById('parallax-content');
         if (pContent) pContent.style.transform = 'translateY(0)';
@@ -605,7 +496,7 @@
     window.switchTab = switchTab;
     window.openProject = openProject;
 
-    // ===== INTERSECTION OBSERVER (Появление и Staggered) =====
+    // ===== INTERSECTION OBSERVER =====
     let observer;
 
     function initAnimations() {
@@ -633,27 +524,22 @@
       elements.forEach((el, index) => {
         el.classList.remove('visible');
         
-        // Staggered анимация для главной страницы
         if (el.classList.contains('feature-card')) {
           el.style.transitionDelay = `${index * 0.15}s`;
         } else {
-          el.style.transitionDelay = '0s'; // Сброс для остальных
+          el.style.transitionDelay = '0s';
         }
         
         observer.observe(el);
       });
     }
 
-    // ===== ПАРАЛЛАКС (Только для главной) =====
+    // ===== ПАРАЛЛАКС =====
     appContent.addEventListener('scroll', () => {
       if (!document.getElementById('screen-home').classList.contains('active')) return;
       const scrolled = appContent.scrollTop;
-      
-      // Параллакс для фона
       const bg = document.getElementById('parallax-bg');
       if (bg) bg.style.transform = `translateY(${scrolled * 0.4}px)`;
-      
-      // Параллакс для контента (чуть быстрее)
       const content = document.getElementById('parallax-content');
       if (content) content.style.transform = `translateY(${scrolled * 0.15}px)`;
     });
